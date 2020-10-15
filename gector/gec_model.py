@@ -13,10 +13,10 @@ from allennlp.data.vocabulary import Vocabulary
 from allennlp.modules.text_field_embedders import BasicTextFieldEmbedder
 from allennlp.nn import util
 
-from gector.bert_token_embedder import PretrainedBertEmbedder
-from gector.seq2labels_model import Seq2Labels
-from gector.wordpiece_indexer import PretrainedBertIndexer
-from utils.helpers import PAD, UNK, get_target_sent_by_edits, START_TOKEN
+from gector.gector.bert_token_embedder import PretrainedBertEmbedder
+from gector.gector.seq2labels_model import Seq2Labels
+from gector.gector.wordpiece_indexer import PretrainedBertIndexer
+from gector.utils.helpers import PAD, UNK, get_target_sent_by_edits, START_TOKEN
 
 logging.getLogger("werkzeug").setLevel(logging.ERROR)
 logger = logging.getLogger(__file__)
@@ -49,6 +49,7 @@ def get_weights_name(transformer_name, lowercase):
 
 class GecBERTModel(object):
     def __init__(self, vocab_path=None, model_paths=None,
+                 weights=None,
                  weigths=None,
                  max_len=50,
                  min_len=3,
@@ -63,7 +64,7 @@ class GecBERTModel(object):
                  confidence=0,
                  resolve_cycles=False,
                  ):
-        self.model_weights = list(map(float, weigths)) if weigths else [1] * len(model_paths)
+        self.model_weights = list(map(float, weights)) if weights else [1] * len(model_paths)
         self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         self.max_len = max_len
         self.min_len = min_len
