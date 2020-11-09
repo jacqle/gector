@@ -4,12 +4,12 @@ from gector.utils.helpers import read_lines
 from gector.gector.gec_model import GecBERTModel
 
 
-def predict_for_string(input_text, model, batch_size=32):
+def predict_for_tokens(input_text, model, batch_size=32):
     predictions = []
     cnt_corrections = 0
     batch = []
     for sent in input_text.split('.'): # segmentation with spacy
-        batch.append(sent.split())
+        batch.append(sent)
         if len(batch) == batch_size:
             preds, cnt = model.handle_batch(batch)
             predictions.extend(preds)
@@ -20,8 +20,8 @@ def predict_for_string(input_text, model, batch_size=32):
         predictions.extend(preds)
         cnt_corrections += cnt
 
-    output_text = " ".join([" ".join(x) for x in predictions])
-    return output_text
+    output_tokens = predictions
+    return output_tokens
 
 
 def predict_for_file(input_file, output_file, model, batch_size=32):
