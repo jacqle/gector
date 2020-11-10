@@ -8,7 +8,7 @@ def predict_for_tokens(input_text, model, batch_size=32):
     predictions = []
     cnt_corrections = 0
     batch = []
-    for sent in input_text
+    for sent in input_text:
         batch.append(sent)
         if len(batch) == batch_size:
             preds, cnt = model.handle_batch(batch)
